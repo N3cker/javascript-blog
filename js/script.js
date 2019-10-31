@@ -64,10 +64,10 @@ function calculateTagsParams(allTags){
   const params = {max: 0, min: 999999};
   for(let tag in allTags){
     if(allTags[tag] > params.max){
-      params.max = [tag];
+      params.max = allTags[tag];
     }
-    if(allTags[tag] > params.min){
-      params.min = [tag];
+    if(allTags[tag] < params.min){
+      params.min = allTags[tag];
     }
     //console.log(tag + ' is used ' + allTags[tag] + ' times ');
   }
@@ -76,9 +76,8 @@ function calculateTagsParams(allTags){
 
 function calculateTagClass(count, params){
   // console.log(count, params)
-  
 const normalizedCount = count - params.min;
-const normalizedMax = params.max.lenght - params.min;
+const normalizedMax = params.max - params.min;
 const percentage = normalizedCount / normalizedMax;
 const classNumber = Math.floor( percentage * (optCloudClassCount - 1) + 1 );
 // console.log(percentage, optCloudClassCount)
@@ -213,7 +212,7 @@ function calculateAuthorClass(count, params){
 }
 
 function generateAuthors(){
-  debugger;
+  
   /* [NEW] create a new variable allAuthors with an empty object */
   let allAuthors = {};
   /* find all articles */
@@ -225,9 +224,9 @@ function generateAuthors(){
     /* make html variable with empty string */
     let html = '';
     /* get authors from data-authors attribute */
-    const articleAuthors = document.querySelector('.post').dataset.author;
+    const articleAuthors = article.getAttribute('data-author');
     /* Generate HTML of the link */
-    const linkHTML = '<a href="#author-' + articleAuthors + '">' + articleAuthors + '</a>' + ' ';
+    const linkHTML = '<li><a href="#author-' + articleAuthors + '">' + articleAuthors + '</a></li>' + ' ';
     /* add generated code to html variable */
     html = html + linkHTML;
     // console.log(html);
